@@ -1,0 +1,26 @@
+language: python
+python: 3.10
+cache: pip
+
+
+jobs:
+  include:
+  - stage: "Lint & Unit-tests"
+    install:
+      - pip install -r requirements.txt
+      - pip install -r requirements-dev.txt
+    script:
+      - pylint --rcfile=.pylintrc ./src/ --init-hook='sys.path.extend(["./src/"])'
+      - echo "unit-testing"
+
+  - stage: "Deploy: Staging"
+    # TODO: staging deploy
+
+  - stage: "Deploy: Productions"
+    # TODO: production deploy
+
+
+branches:
+  only:
+  - master
+  - staging
