@@ -1,4 +1,4 @@
-FROM python:3.10.6-alpine
+FROM python:3.9.7-alpine
 
 RUN mkdir /src
 COPY requirements.txt requirements-dev.txt src /src/
