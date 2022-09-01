@@ -1,4 +1,4 @@
-FROM python:3.9.7-alpine
+FROM python:3.9.13
 
 RUN mkdir /src
 COPY requirements.txt requirements-dev.txt src /src/
@@ -10,4 +10,4 @@ RUN pip install --upgrade pip && \
     pip install -r /src/requirements.txt && \
     pip install -r /src/requirements-dev.txt
 
-WORKDIR /src
+WORKDIR /monoboard.api.user/src
