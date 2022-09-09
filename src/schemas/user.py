@@ -31,6 +31,16 @@ class UserCreateSchema(BaseModel):
         anystr_strip_whitespace = True
 
 
+class UserUpdateSchema(BaseModel):
+    """Model of user update."""
+    first_name: Union[str, None] = Field(min_length=3, max_length=255, regex=r'^[A-Z][a-zA-Z]*')
+    last_name: Union[str, None] = Field(min_length=3, max_length=255, regex=r'^[A-Z][a-zA-Z]*')
+
+    class Config:
+        """Additional configuration for user update model."""
+        anystr_strip_whitespace = True
+
+
 class UserResponseSchema(ResponseSchema):
     """Model for user response."""
     data: UserSchema

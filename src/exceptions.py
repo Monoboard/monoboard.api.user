@@ -4,7 +4,7 @@
 class BaseError(Exception):
     """Class that represents base error."""
 
-    def __init__(self, message=None):
+    def __init__(self, message: str = None):
         """Initialize base custom error."""
         super().__init__()
         self.message = message
@@ -33,12 +33,18 @@ class DatabaseError(BaseError):
 class DBNoResultFoundError(DatabaseError):
     """Class that represents errors caused on not existing entity."""
 
+    def __init__(self, message: str = None, search_fields: dict = None):
+        """Initialize DBNoResultFoundError custom error."""
+        super().__init__()
+        self.message = message
+        self.search_fields = search_fields
+
 
 class DBUniqueViolationError(DatabaseError):
     """Class that represents errors caused on duplication."""
 
-    def __init__(self, message=None, duplicate_fields=None):
-        """Initialize base custom error."""
+    def __init__(self, message: str = None, duplicate_fields: dict = None):
+        """Initialize DBUniqueViolationError custom error."""
         super().__init__()
         self.message = message
         self.duplicate_fields = duplicate_fields
