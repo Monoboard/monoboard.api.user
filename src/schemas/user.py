@@ -6,21 +6,31 @@ from typing import Union
 
 from pydantic import BaseModel, Field
 
+from schemas.base import ResponseSchema
 
-class User(BaseModel):
+
+class UserSchema(BaseModel):
     """Base model of user entity."""
     id: uuid.UUID
     first_name: Union[str, None]
     last_name: Union[str, None]
     created_date: datetime.datetime
 
-    # TODO orm mode
+    class Config:
+        orm_mode = True
 
 
-class UserCreate(BaseModel):
+class UserCreateSchema(BaseModel):
     """Model of user creation."""
+    first_name: Union[str, None]
+    last_name: Union[str, None]
     monobank_token: str = Field(..., min_length=10)
 
     class Config:
         """Additional configuration for user create model."""
         anystr_strip_whitespace = True
+
+
+class UserResponseSchema(ResponseSchema):
+    """Model for user response."""
+    data: UserSchema

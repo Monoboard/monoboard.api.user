@@ -10,4 +10,4 @@ RUN pip install --upgrade pip && \
     pip install -r /src/requirements.txt && \
     pip install -r /src/requirements-dev.txt
 
-WORKDIR /monoboard.api.user/src
+WORKDIR /src
