@@ -68,6 +68,7 @@ def create_user(user_input: UserCreateSchema, session: Session = Depends(get_dat
     dependencies=[Depends(verify_auth)],
     responses={
         400: {"model": ResponseSchema, "description": "Database error"},
+        401: {"model": ResponseSchema, "description": "Unauthorized"},
         404: {"model": ResponseSchema, "description": "User not found"},
         422: {"model": ResponseSchema, "description": "Validation error"},
     },
@@ -106,6 +107,7 @@ def get_user(user_id: uuid.UUID, session: Session = Depends(get_database_session
     dependencies=[Depends(verify_auth)],
     responses={
         400: {"model": ResponseSchema, "description": "Database error"},
+        401: {"model": ResponseSchema, "description": "Unauthorized"},
         404: {"model": ResponseSchema, "description": "User not found"},
         422: {"model": ResponseSchema, "description": "Validation error"},
     },

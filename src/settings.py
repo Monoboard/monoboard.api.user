@@ -3,6 +3,7 @@
 import os
 
 # App stuff
+APP_NAME = "monoboard.api.user"
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.abspath(os.path.join(APP_DIR, os.pardir))
 
@@ -19,3 +20,6 @@ DATABASE_URL = "postgresql://{user}:{password}@{host}:{port}/{database_name}".fo
     port=POSTGRES_PORT,
     database_name=POSTGRES_DB_NAME,
 )
+
+# API keys
+INTERNAL_API_KEYS = {"monoboard.api.auth": os.getenv("AUTH_USER_API_KEY")}

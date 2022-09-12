@@ -1,12 +1,14 @@
 """This module includes api endpoints for internal usage."""
 
 from http import HTTPStatus
+from datetime import datetime
 
 from fastapi import APIRouter, Request
 from fastapi.exceptions import RequestValidationError
 
 from schemas.base import ResponseSchema
 from utils.response import make_response
+from settings import APP_NAME
 
 
 router = APIRouter()
@@ -19,7 +21,22 @@ router = APIRouter()
 )
 def health():
     """Respond with status OK for a health check."""
-    return make_response(success=True, message=HTTPStatus.OK.phrase, http_status=HTTPStatus.OK)
+    return make_response(
+        success=True,
+        message=HTTPStatus.OK.phrase,
+        http_status=HTTPStatus.OK,
+        data={"service": APP_NAME, "date": datetime.now().isoformat()}
+    )
+
+
+def handle_401(request, response):
+    """Handle 401 unauthorized error."""
+    return make_response(
+        success=False,
+        http_status=HTTPStatus.UNAUTHORIZED,
+        message=response.detail,
+        subcode=HTTPStatus.UNAUTHORIZED.phrase,
+    )
 
 
 def handle_404(*args):
