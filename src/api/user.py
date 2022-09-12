@@ -31,8 +31,8 @@ router = APIRouter()
     status_code=status.HTTP_201_CREATED,
     responses={
         409: {"model": ResponseSchema, "description": "Duplicate user"},
-        400: {"model": ResponseSchema, "description": "Database error"}
-    }
+        400: {"model": ResponseSchema, "description": "Database error"},
+    },
 )
 def create_user(user_input: UserCreateSchema, session: Session = Depends(get_database_session)):
     """Create a new user in the database."""
@@ -43,14 +43,14 @@ def create_user(user_input: UserCreateSchema, session: Session = Depends(get_dat
             success=False,
             http_status=status.HTTP_409_CONFLICT,
             subcode=DUPLICATE_USER_SUBCODE,
-            message="User with such token already exists"
+            message="User with such token already exists",
         )
     except DatabaseError:
         return make_response(
             success=False,
             http_status=status.HTTP_400_BAD_REQUEST,
             subcode=DATABASE_ERROR_SUBCODE,
-            message="Failed to create user in the database"
+            message="Failed to create user in the database",
         )
 
     return UserResponseSchema(
@@ -67,8 +67,8 @@ def create_user(user_input: UserCreateSchema, session: Session = Depends(get_dat
     dependencies=[Depends(verify_auth)],
     responses={
         404: {"model": ResponseSchema, "description": "User not found"},
-        400: {"model": ResponseSchema, "description": "Database error"}
-    }
+        400: {"model": ResponseSchema, "description": "Database error"},
+    },
 )
 def get_user(user_id: uuid.UUID, session: Session = Depends(get_database_session)):
     """Retrieve a user by provided user_id."""
@@ -80,14 +80,14 @@ def get_user(user_id: uuid.UUID, session: Session = Depends(get_database_session
             http_status=status.HTTP_404_NOT_FOUND,
             subcode=USER_NOT_FOUND_SUBCODE,
             message="User not found by provided id",
-            data=err.search_fields
+            data=err.search_fields,
         )
     except DatabaseError:
         return make_response(
             success=False,
             http_status=status.HTTP_400_BAD_REQUEST,
             subcode=DATABASE_ERROR_SUBCODE,
-            message="Failed to retrieve user from the database"
+            message="Failed to retrieve user from the database",
         )
 
     return UserResponseSchema(
@@ -104,10 +104,14 @@ def get_user(user_id: uuid.UUID, session: Session = Depends(get_database_session
     dependencies=[Depends(verify_auth)],
     responses={
         404: {"model": ResponseSchema, "description": "User not found"},
-        400: {"model": ResponseSchema, "description": "Database error"}
-    }
+        400: {"model": ResponseSchema, "description": "Database error"},
+    },
 )
-def update_user(user_id: uuid.UUID, user_input: UserUpdateSchema, session: Session = Depends(get_database_session)):
+def update_user(
+    user_id: uuid.UUID,
+    user_input: UserUpdateSchema,
+    session: Session = Depends(get_database_session),
+):
     """Update a user by provided user_id."""
     try:
         user = User.update(session, user_id, user_input)
@@ -117,14 +121,14 @@ def update_user(user_id: uuid.UUID, user_input: UserUpdateSchema, session: Sessi
             http_status=status.HTTP_404_NOT_FOUND,
             subcode=USER_NOT_FOUND_SUBCODE,
             message="User not found by provided id",
-            data=err.search_fields
+            data=err.search_fields,
         )
     except DatabaseError:
         return make_response(
             success=False,
             http_status=status.HTTP_400_BAD_REQUEST,
             subcode=DATABASE_ERROR_SUBCODE,
-            message="Failed to update user in the database"
+            message="Failed to update user in the database",
         )
 
     return UserResponseSchema(
@@ -132,4 +136,3 @@ def update_user(user_id: uuid.UUID, user_input: UserUpdateSchema, session: Sessi
         message="User was successfully updated",
         data=user,
     )
-

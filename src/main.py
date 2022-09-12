@@ -12,4 +12,3 @@ app.include_router(user_router, prefix="/api/v1", tags=["user"])
 
 app.add_exception_handler(status.HTTP_404_NOT_FOUND, handle_404)
 app.add_exception_handler(status.HTTP_405_METHOD_NOT_ALLOWED, handle_405)
-

@@ -13,11 +13,7 @@ router = APIRouter()
 @router.get("/health")
 def health():
     """Respond with status OK for a health check."""
-    return make_response(
-        success=True,
-        message=HTTPStatus.OK.phrase,
-        http_status=HTTPStatus.OK
-    )
+    return make_response(success=True, message=HTTPStatus.OK.phrase, http_status=HTTPStatus.OK)
 
 
 def handle_404(*args):

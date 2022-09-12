@@ -17,5 +17,5 @@ DATABASE_URL = "postgresql://{user}:{password}@{host}:{port}/{database_name}".fo
     password=POSTGRES_PASSWORD,
     host=POSTGRES_HOST,
     port=POSTGRES_PORT,
-    database_name=POSTGRES_DB_NAME
+    database_name=POSTGRES_DB_NAME,
 )

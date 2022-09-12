@@ -26,6 +26,7 @@ LOGGER = logging.getLogger(__name__)
 
 class User(BaseModel, BaseModelMixin):
     """Class that represents User in the database."""
+
     __tablename__ = "user"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)

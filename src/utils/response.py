@@ -16,6 +16,6 @@ def make_response(
         "success": success,
         "message": message,
         "subcode": subcode,
-        "data": data
+        "data": data,
     }
     return JSONResponse(response, status_code=http_status)
