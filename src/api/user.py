@@ -30,8 +30,9 @@ router = APIRouter()
     response_model=UserResponseSchema,
     status_code=status.HTTP_201_CREATED,
     responses={
-        409: {"model": ResponseSchema, "description": "Duplicate user"},
         400: {"model": ResponseSchema, "description": "Database error"},
+        409: {"model": ResponseSchema, "description": "Duplicate user"},
+        422: {"model": ResponseSchema, "description": "Validation error"},
     },
 )
 def create_user(user_input: UserCreateSchema, session: Session = Depends(get_database_session)):
@@ -66,8 +67,9 @@ def create_user(user_input: UserCreateSchema, session: Session = Depends(get_dat
     status_code=status.HTTP_200_OK,
     dependencies=[Depends(verify_auth)],
     responses={
-        404: {"model": ResponseSchema, "description": "User not found"},
         400: {"model": ResponseSchema, "description": "Database error"},
+        404: {"model": ResponseSchema, "description": "User not found"},
+        422: {"model": ResponseSchema, "description": "Validation error"},
     },
 )
 def get_user(user_id: uuid.UUID, session: Session = Depends(get_database_session)):
@@ -103,8 +105,9 @@ def get_user(user_id: uuid.UUID, session: Session = Depends(get_database_session
     status_code=status.HTTP_200_OK,
     dependencies=[Depends(verify_auth)],
     responses={
-        404: {"model": ResponseSchema, "description": "User not found"},
         400: {"model": ResponseSchema, "description": "Database error"},
+        404: {"model": ResponseSchema, "description": "User not found"},
+        422: {"model": ResponseSchema, "description": "Validation error"},
     },
 )
 def update_user(

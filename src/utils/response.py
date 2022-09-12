@@ -1,5 +1,7 @@
 """This module provides helper functionality for web responses."""
 
+from typing import Union
+
 from fastapi import status
 from fastapi.responses import JSONResponse
 
@@ -9,7 +11,7 @@ def make_response(
     http_status: status,
     subcode: str = None,
     message: str = None,
-    data: dict = None,
+    data: Union[dict, list, None] = None,
 ):
     """Return formatted json response."""
     response = {
