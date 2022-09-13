@@ -2,6 +2,7 @@
 
 import uuid
 import datetime
+from enum import Enum
 from typing import Union
 
 from pydantic import BaseModel, Field
@@ -21,6 +22,13 @@ class UserSchema(BaseModel):
         """Additional configuration for user schema."""
 
         orm_mode = True
+
+
+class UserGetFieldsSchema(str, Enum):
+    """Supported user get fields."""
+
+    id = "id"
+    monobank_token = "monobank_token"
 
 
 class UserCreateSchema(BaseModel):

@@ -43,7 +43,9 @@ class User(BaseModel, BaseModelMixin):
             user = cls.save(session, user)
         except exc.IntegrityError as err:
             if UNIQUE_VIOLATION_ERROR in str(err):
-                raise DBUniqueViolationError(duplicate_fields={MONOBANK_TOKEN_KEY: user_input.monobank_token})
+                raise DBUniqueViolationError(
+                    duplicate_fields={MONOBANK_TOKEN_KEY: user_input.monobank_token}
+                )
 
             LOGGER.error("Failed to create user: %s. Error: %s", user_input, err)
             raise DatabaseError(message=str(err))
@@ -54,23 +56,23 @@ class User(BaseModel, BaseModelMixin):
         return user
 
     @classmethod
-    def get(cls, session: Session, user_id: uuid.UUID):
-        """Create a user in the database."""
+    def get(cls, session: Session, field: str, value: str):
+        """Retrieve user by provided uuid from the database."""
         try:
-            user = session.query(cls).filter(cls.id == user_id).one_or_none()
+            user = session.query(cls).filter(getattr(cls, field) == value).one_or_none()
         except exc.SQLAlchemyError as err:
-            LOGGER.error("Failed to retrieve user: %s. Error: %s", user_id, err)
+            LOGGER.error("Failed to retrieve user by %s: %s. Error: %s", field, value, err)
             raise DatabaseError(message=str(err))
 
         if not user:
-            raise DBNoResultFoundError(search_fields={ID_KEY: str(user_id)})
+            raise DBNoResultFoundError(search_fields={field: value})
 
         return user
 
     @classmethod
     def update(cls, session: Session, user_id: uuid.UUID, user_input: UserUpdateSchema):
         """Update a user in the database."""
-        user = cls.get(session, user_id)
+        user = cls.get(session, ID_KEY, user_id)
 
         try:
             for key, value in user_input.dict(exclude_unset=True).items():

@@ -8,7 +8,7 @@ from fastapi import APIRouter, status, Depends
 from dependencies import verify_auth, get_database_session
 from models.user import User
 from schemas.base import ResponseSchema
-from schemas.user import UserResponseSchema, UserUpdateSchema, UserCreateSchema
+from schemas.user import UserResponseSchema, UserUpdateSchema, UserCreateSchema, UserGetFieldsSchema
 from utils.response import make_response
 from constants import (
     DUPLICATE_USER_SUBCODE,
@@ -62,7 +62,7 @@ def create_user(user_input: UserCreateSchema, session: Session = Depends(get_dat
 
 
 @router.get(
-    "/user/{user_id}",
+    "/user/",
     response_model=UserResponseSchema,
     status_code=status.HTTP_200_OK,
     dependencies=[Depends(verify_auth)],
@@ -73,16 +73,18 @@ def create_user(user_input: UserCreateSchema, session: Session = Depends(get_dat
         422: {"model": ResponseSchema, "description": "Validation error"},
     },
 )
-def get_user(user_id: uuid.UUID, session: Session = Depends(get_database_session)):
+def get_user(
+    field: UserGetFieldsSchema, value: str, session: Session = Depends(get_database_session)
+):
     """Retrieve a user by provided user_id."""
     try:
-        user = User.get(session, user_id)
+        user = User.get(session, field, value)
     except DBNoResultFoundError as err:
         return make_response(
             success=False,
             http_status=status.HTTP_404_NOT_FOUND,
             subcode=USER_NOT_FOUND_SUBCODE,
-            message="User not found by provided id",
+            message="User wasn't found by parameters",
             data=err.search_fields,
         )
     except DatabaseError:
@@ -125,7 +127,7 @@ def update_user(
             success=False,
             http_status=status.HTTP_404_NOT_FOUND,
             subcode=USER_NOT_FOUND_SUBCODE,
-            message="User not found by provided id",
+            message="User wasn't found by provided id",
             data=err.search_fields,
         )
     except DatabaseError:

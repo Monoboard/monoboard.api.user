@@ -3,7 +3,13 @@
 from fastapi import FastAPI, status
 from fastapi.exceptions import RequestValidationError
 
-from api.internal import router as internal_router, handle_404, handle_405, handle_401, handle_validation_error
+from api.internal import (
+    router as internal_router,
+    handle_404,
+    handle_405,
+    handle_401,
+    handle_validation_error,
+)
 from api.user import router as user_router
 from settings import APP_NAME
 
