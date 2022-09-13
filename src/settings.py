@@ -22,4 +22,10 @@ DATABASE_URL = "postgresql://{user}:{password}@{host}:{port}/{database_name}".fo
 )
 
 # API keys
-INTERNAL_API_KEYS = {"monoboard.api.auth": os.getenv("AUTH_USER_API_KEY")}
+INTERNAL_CONFIGS = {
+    "monoboard.api.auth": {
+        "api_key": os.getenv("AUTH_USER_API_KEY"),
+        "api_host": os.getenv("MONOBOARD_API_AUTH_HOST"),
+        "api_port": os.getenv("MONOBOARD_API_AUTH_PORT"),
+    }
+}
